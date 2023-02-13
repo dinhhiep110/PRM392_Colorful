@@ -14,14 +14,16 @@
 
         <TextView
             android:id="@+id/tv_study_title"
-            android:layout_width="210dp"
+            android:layout_width="250dp"
             android:layout_height="82dp"
-            android:layout_marginStart="30dp"
+            android:layout_marginStart="70dp"
             android:layout_marginTop="35dp"
+            android:layout_marginEnd="171dp"
             android:text="Câu hỏi ôn luyện OKRs"
             android:textColor="@color/black"
             android:textSize="35dp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,49 +58,57 @@
             android:layout_width="145dp"
             android:layout_height="98dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="44dp"
             android:background="@drawable/border_bottom_blue_white"
             android:contentDescription="Learn"
+            app:layout_constraintBottom_toTopOf="@+id/lv_study_set_details"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_author"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/learn_blue" />
 
         <ImageButton
             android:id="@+id/img_flashcard"
             android:layout_width="145dp"
             android:layout_height="98dp"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginEnd="30dp"
             android:background="@drawable/border_bottom_blue_white"
             android:contentDescription="Flashcards"
-            app:layout_constraintStart_toEndOf="@+id/img_learn"
+            app:layout_constraintBottom_toTopOf="@+id/lv_study_set_details"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_author"
+            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/flashcard_blue" />
 
         <ListView
             android:id="@+id/lv_study_set_details"
-            android:layout_width="340dp"
-            android:layout_height="350dp"
-            android:layout_marginStart="10dp"
+            android:layout_width="387dp"
+            android:layout_height="409dp"
             android:layout_marginTop="350dp"
-            android:layout_marginEnd="10dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.549"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" >
+            app:layout_constraintTop_toTopOf="parent">
 
         </ListView>
 
         <Button
-            android:layout_marginHorizontal="32dp"
             android:id="@+id/btn_study_set"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="15dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="10dp"
             android:backgroundTint="@color/aqua"
             android:text="Study this set"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lv_study_set_details" />
+            app:layout_constraintTop_toBottomOf="@+id/lv_study_set_details" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

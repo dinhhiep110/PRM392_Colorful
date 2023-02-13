@@ -24,14 +24,16 @@ import com.coloful.dao.QuizDao;
 import com.coloful.datalocal.DataLocalManager;
 import com.coloful.model.Account;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class CreateStudySetActivity extends AppCompatActivity {
-    Button btnSave;
-    EditText edtCreateQuizTitle;
-    Account account;
-    ImageButton buttonAdd;
-    LinearLayout list;
-    ArrayAdapter<String> adapter1;
-    Context context;
+    private Button btnSave;
+    private EditText edtCreateQuizTitle;
+    private Account account;
+    private ImageButton buttonAdd;
+    private LinearLayout list;
+    private ArrayAdapter<String> adapter1;
+    private Context context;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -53,7 +55,7 @@ public class CreateStudySetActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edtCreateQuizTitle.getText().toString().trim() == null || edtCreateQuizTitle.getText().toString().trim().isEmpty()) {
+                if (StringUtils.isEmpty(edtCreateQuizTitle.getText().toString().trim())) {
                     Toast.makeText(context, "Set's title can not null, please check again!", Toast.LENGTH_SHORT).show();
                     return;
                 }

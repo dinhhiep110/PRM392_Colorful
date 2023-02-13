@@ -31,7 +31,7 @@ public class QuizDao {
         List<Quiz> quizList = new ArrayList<>();
         db = new DBHelper(context);
         sqLiteDatabase = db.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM quiz WHERE author !=?;", new String[]{accountID.toString()});
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM quiz WHERE author = ?;", new String[]{accountID.toString()});
         cursor.moveToFirst();
         QuestionDao questionDao = new QuestionDao();
         while (!cursor.isAfterLast()) {

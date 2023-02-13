@@ -26,6 +26,10 @@ import com.coloful.datalocal.DataLocalManager;
 import com.coloful.model.Account;
 import com.google.gson.Gson;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Objects;
+
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageButton ImgBtnBack;
@@ -93,16 +97,16 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void checkLogin() {
-        String username = edtUsername.getText().toString();
-        String password = edtPassword.getText().toString();
+        String username = edtUsername.getText().toString().trim();
+        String password = edtPassword.getText().toString().trim();
 
         Account account = new Account(username, password);
 
-        if (username.equals("") || password.equals("")) {
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             tvMsg.setText("Please enter username and password!");
         } else {
             Account isLogin = accountDao.checkAccount(this, account);
-            if (isLogin == null) {
+            if (Objects.isNull(isLogin)) {
                 tvMsg.setText("Username or password is invalid!");
             } else {
                 DataLocalManager.setAccount(isLogin);

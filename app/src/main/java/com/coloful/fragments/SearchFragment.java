@@ -100,7 +100,7 @@ public class SearchFragment extends Fragment {
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                tvNoti.setText("Search quiz you want study");
             }
 
             @Override
@@ -114,9 +114,6 @@ public class SearchFragment extends Fragment {
             public void afterTextChanged(Editable editable) {
                 if (quizShow.isEmpty()) {
                     tvNoti.setText("Can't find the quiz you want!");
-//                    Toast.makeText(getContext(), "Can't find the quiz you want!", Toast.LENGTH_SHORT).show();
-                } else {
-                    tvNoti.setText(null);
                 }
             }
         });

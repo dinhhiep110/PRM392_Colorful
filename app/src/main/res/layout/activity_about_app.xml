@@ -30,7 +30,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:layout_marginVertical="10dp"
-            android:text="@string/about_app_content" />
+            android:text="@string/about_app_content"
+            android:textColor="@color/black" />
     </LinearLayout>
 </ScrollView>
 

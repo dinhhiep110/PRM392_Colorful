@@ -33,6 +33,7 @@
         android:ems="10"
         android:hint="Enter new email"
         android:paddingVertical="10dp"
+        android:textColor="@color/primary"
         android:textCursorDrawable="@color/black"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
     <TextView

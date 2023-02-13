@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="5dp"
     android:background="@color/white_smoke"
     android:orientation="vertical"
-    android:padding="10dp"
+    android:padding="5dp"
     tools:context=".activity.FlashcardActivity">
 
     <LinearLayout
@@ -93,35 +94,26 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:orientation="horizontal">
+        android:layout_height="78dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <ImageButton
             android:id="@+id/img_flash_pre"
             android:layout_width="60dp"
             android:layout_height="match_parent"
+            android:layout_margin="10dp"
             android:background="@drawable/round_button"
             android:gravity="start"
             app:srcCompat="@drawable/ic_baseline_keyboard_return_24"
             tools:ignore="SpeakableTextPresentCheck" />
 
-        <TextView
-            android:layout_width="130dp"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="50dp"
-            android:gravity="center"
-            android:text="dsda"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:visibility="invisible" />
-
         <ImageButton
             android:id="@+id/img_flash_next"
             android:layout_width="60dp"
             android:layout_height="match_parent"
+            android:layout_margin="10dp"
             android:background="@drawable/round_button"
             android:gravity="start"
             app:srcCompat="@drawable/ic_baseline_arrow_right_24"

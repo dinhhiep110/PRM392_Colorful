@@ -26,15 +26,15 @@ import java.util.List;
 import java.util.Random;
 
 public class LearningActivity extends AppCompatActivity {
-    int quizId;
-    QuizDao myDB;
-    Button ansBtn1, ansBtn2, ansBtn3, ansBtn4;
-    TextView countLabel, questionLabel;
-    String rightAnswer;
-    int rightAnswerCount =0;
-    int quizCount = 1;
-    static final private int QUIZ_COUNT = 5;
-    ArrayList<ArrayList<String>> quizArray = new ArrayList<>();
+    private int quizId;
+    private QuizDao myDB;
+    private Button ansBtn1, ansBtn2, ansBtn3, ansBtn4;
+    private TextView countLabel, questionLabel;
+    private String rightAnswer;
+    private int rightAnswerCount =0;
+    private int quizCount = 1;
+    private static final int QUIZ_COUNT = 5;
+    private ArrayList<ArrayList<String>> quizArray = new ArrayList<>();
 
     String quizData[][] = {
             {"hoho", "VN", "HQ","TQ", "NB"},
