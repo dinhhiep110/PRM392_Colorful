@@ -1,6 +1,7 @@
 package com.coloful.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.coloful.R;
 import com.coloful.adapters.ListViewStudySetAdapter;
 import com.coloful.dao.AccountDao;
+import com.coloful.dao.QuizAccountDao;
 import com.coloful.dao.QuizDao;
 import com.coloful.datalocal.DataLocalManager;
 import com.coloful.model.Account;
@@ -26,14 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StudySetDetailsActivity extends AppCompatActivity implements View.OnClickListener {
-    List<Question> questionList = new ArrayList<>();
-    ListView listView;
-    Button btnStudySet;
-    ImageButton imnLearn;
-    ImageButton imgFlashcard;
-    TextView tvTitle, tvAuthor, tvTerm;
-    String screen;
-    int quizId;
+    private List<Question> questionList = new ArrayList<>();
+    private ListView listView;
+    private Button btnStudySet;
+    private ImageButton imnLearn;
+    private ImageButton imgFlashcard;
+    private TextView tvTitle, tvAuthor, tvTerm;
+    private String screen;
+    private int quizId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,13 @@ public class StudySetDetailsActivity extends AppCompatActivity implements View.O
         listView = findViewById(R.id.lv_study_set_details);
         ListViewStudySetAdapter adapter = new ListViewStudySetAdapter(this, questionList);
         listView.setAdapter(adapter);
-
+        QuizAccountDao quizAccountDao = new QuizAccountDao();
+        if(quizAccountDao.getQuizAccountByIds(this, account.getId(),quizId)){
+            quizAccountDao.updateQuizAccount(this,account.getId(),quizId);
+        }
+        else{
+            quizAccountDao.addQuizAccount(this,account.getId(),quizId);
+        }
         btnStudySet = findViewById(R.id.btn_study_set);
         imgFlashcard = findViewById(R.id.img_flashcard);
         imnLearn = findViewById(R.id.img_learn);

@@ -123,10 +123,10 @@ public class SignUpActivity extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String dob = ed_date.getText().toString();
-                String email = ed_email.getText().toString();
-                String username = ed_username.getText().toString();
-                String password = ed_password.getText().toString();
+                String dob = ed_date.getText().toString().trim();
+                String email = ed_email.getText().toString().trim();
+                String username = ed_username.getText().toString().trim();
+                String password = ed_password.getText().toString().trim();
 
                 Pattern patternAccAndPass = Pattern.compile("^\\w{8,32}$");
                 Pattern patternEmail = Pattern.compile("^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$");

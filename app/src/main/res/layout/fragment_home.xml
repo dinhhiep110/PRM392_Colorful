@@ -20,7 +20,8 @@
             android:text="Some set(s) your study recently"
             android:textColor="@color/primary"
             android:textSize="18dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rc_quiz_home"

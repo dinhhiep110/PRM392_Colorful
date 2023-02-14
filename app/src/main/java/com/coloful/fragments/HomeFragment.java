@@ -31,11 +31,11 @@ import java.util.List;
  */
 public class HomeFragment extends Fragment {
 
-    RecyclerView rcQuizHome, rcYourSet;
+    private RecyclerView rcQuizHome, rcYourSet;
 
-    List<Quiz> quizRecently = new ArrayList<>();
-    List<Quiz> yourSet = new ArrayList<>();
-    TextView tvQuizRecently, tvYourSet, tvInStruction;
+    private List<Quiz> quizRecently = new ArrayList<>();
+    private List<Quiz> yourSet = new ArrayList<>();
+    private TextView tvQuizRecently, tvYourSet, tvInStruction;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -91,7 +91,8 @@ public class HomeFragment extends Fragment {
 
         QuizDao dao = new QuizDao();
         Account account = DataLocalManager.getAccount();
-        quizRecently = dao.getQuizRecently(getContext(), account.getId());
+//        quizRecently = dao.getQuizRecently(getContext(), account.getId());
+        quizRecently = new ArrayList<>();
         yourSet = dao.getYourQuiz(getContext(), account);
 
         if ((quizRecently == null && yourSet == null)
