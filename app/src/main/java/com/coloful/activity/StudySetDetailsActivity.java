@@ -1,7 +1,6 @@
 package com.coloful.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,14 +8,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.coloful.R;
-import com.coloful.adapters.ListViewStudySetAdapter;
-import com.coloful.dao.AccountDao;
+import com.coloful.adapters.RecyclerViewQuestionAdapter;
 import com.coloful.dao.QuizAccountDao;
 import com.coloful.dao.QuizDao;
 import com.coloful.datalocal.DataLocalManager;
@@ -29,7 +28,7 @@ import java.util.List;
 
 public class StudySetDetailsActivity extends AppCompatActivity implements View.OnClickListener {
     private List<Question> questionList = new ArrayList<>();
-    private ListView listView;
+    private RecyclerView recyclerView;
     private Button btnStudySet;
     private ImageButton imnLearn;
     private ImageButton imgFlashcard;
@@ -66,9 +65,11 @@ public class StudySetDetailsActivity extends AppCompatActivity implements View.O
 
         tvTerm.setText(questionList.size() + " Terms");
 
-        listView = findViewById(R.id.lv_study_set_details);
-        ListViewStudySetAdapter adapter = new ListViewStudySetAdapter(this, questionList);
-        listView.setAdapter(adapter);
+        recyclerView = findViewById(R.id.rc_study_set_details);
+        RecyclerViewQuestionAdapter recyclerViewQuestionAdapter = new RecyclerViewQuestionAdapter(questionList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(recyclerViewQuestionAdapter);
         QuizAccountDao quizAccountDao = new QuizAccountDao();
         if(quizAccountDao.getQuizAccountByIds(this, account.getId(),quizId)){
             quizAccountDao.updateQuizAccount(this,account.getId(),quizId);

@@ -23,9 +23,13 @@ import java.util.stream.Collectors;
 
 public class QuizDao {
 
-    AccountDao accountDao = new AccountDao();
-    DBHelper db;
-    SQLiteDatabase sqLiteDatabase;
+    private AccountDao accountDao;
+    private DBHelper db;
+    private SQLiteDatabase sqLiteDatabase;
+
+    public QuizDao() {
+        accountDao = new AccountDao();
+    }
 
     public List<Quiz> allQuiz(Context context, Integer accountID) {
         List<Quiz> quizList = new ArrayList<>();

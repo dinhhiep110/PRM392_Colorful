@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     TextView actionBarTitle;
 
 
-    @SuppressLint("ResourceAsColor")
+    @SuppressLint({"ResourceAsColor", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

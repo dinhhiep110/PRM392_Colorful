@@ -36,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(sqlQuestion);
 
         String sqlAnswer = "CREATE TABLE IF NOT EXISTS " + Constant.Answer.TABLE_NAME.getValue()
-                + " (id integer primary key autoincrement, question_content TEXT not null," +
+                + " (id integer primary key autoincrement, answer_content TEXT not null," +
                 " question_id TEXT not null)";
         sqLiteDatabase.execSQL(sqlAnswer);
 

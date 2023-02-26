@@ -35,14 +35,14 @@ import java.util.stream.Collectors;
  */
 public class SearchFragment extends Fragment {
 
-    EditText edtSearch;
-    TextView tvNoti;
+    private EditText edtSearch;
+    private TextView tvNoti;
 
-    ListView lvSearch;
-    ListViewQuizAdapter adapter;
+    private ListView lvSearch;
+    private ListViewQuizAdapter adapter;
 
-    List<Quiz> quizList = new ArrayList<>();
-    List<Quiz> quizShow = new ArrayList<>();
+    private List<Quiz> quizList = new ArrayList<>();
+    private List<Quiz> quizShow = new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -89,10 +89,10 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        edtSearch = (EditText) view.findViewById(R.id.edt_search_set);
-        tvNoti = (TextView) view.findViewById(R.id.tv_search_noti);
+        edtSearch = view.findViewById(R.id.edt_search_set);
+        tvNoti = view.findViewById(R.id.tv_search_noti);
 
-        lvSearch = (ListView) view.findViewById(R.id.lv_search);
+        lvSearch = view.findViewById(R.id.lv_search);
         QuizDao dao = new QuizDao();
 
         quizList.addAll(dao.allQuiz(getContext(), DataLocalManager.getAccount().getId()));

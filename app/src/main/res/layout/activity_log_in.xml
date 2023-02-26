@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/primary"
     android:orientation="vertical"
     android:paddingHorizontal="10dp"
     tools:context=".activity.LogInActivity">
@@ -14,19 +14,19 @@
         android:layout_width="43dp"
         android:layout_height="50dp"
         android:layout_marginVertical="20dp"
-        android:background="@color/white_smoke"
+        android:background="@color/primary"
         app:srcCompat="?attr/actionModeCloseDrawable"
         app:tint="#00BCD4"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/tv_2"
-        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:fontFamily="sans-serif-medium"
         android:text="LOG IN WITH YOUR USERNAME"
-        android:textColor="@color/gray"
+        android:textColor="@color/lightGray"
         android:textStyle="bold" />
 
     <EditText
@@ -34,15 +34,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:background="@drawable/border_bottom_text"
         android:backgroundTintMode="src_atop"
+        android:cursorVisible="true"
         android:ems="10"
         android:hint="Enter your username"
         android:inputType="text"
-        android:background="@drawable/border_bottom_text"
-        android:textCursorDrawable="@color/black"
-        android:cursorVisible="true"
         android:paddingBottom="10dp"
+        android:textCursorDrawable="@color/black"
         tools:ignore="TouchTargetSizeCheck" />
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
@@ -57,15 +58,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:backgroundTintMode="src_atop"
-        android:ems="10"
-        android:hint="Enter your password"
-        android:focusableInTouchMode="true"
-        android:inputType="textPassword"
         android:background="@drawable/border_bottom_text"
-        android:textCursorDrawable="@color/black"
+        android:backgroundTintMode="src_atop"
         android:cursorVisible="true"
+        android:ems="10"
+        android:focusableInTouchMode="true"
+        android:hint="Enter your password"
+        android:inputType="textPassword"
         android:paddingBottom="10dp"
+        android:textCursorDrawable="@color/black"
         tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
@@ -76,6 +77,7 @@
         android:text="PASSWORD"
         android:textColor="@color/dark_gray"
         android:textStyle="bold" />
+
     <TextView
         android:id="@+id/tvMsg"
         android:layout_width="match_parent"
@@ -188,5 +190,5 @@
         android:layout_marginTop="50dp"
         android:backgroundTint="@color/aqua"
         android:text="Login"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 </LinearLayout>
