@@ -1,21 +1,16 @@
 package com.coloful.dao;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.coloful.constant.Constant;
-import com.coloful.model.Answer;
-import com.coloful.model.Question;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "DB_QUIZ";
     private static final int version = 2;
     public Context context;
+
     public DBHelper(Context context) {
         super(context, DB_NAME, null, version);
         this.context = context;
@@ -63,46 +58,5 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(sqlQuizAccount);
 
         onCreate(sqLiteDatabase);
-    }
-
-
-    public List<Question> getAllQuestions() {
-        List<Question> quesList = new ArrayList<>();
-        SQLiteDatabase sqLiteDatabase;
-        sqLiteDatabase=this.getReadableDatabase();
-        String selectQuery = "SELECT * FROM " + Constant.Question.TABLE_NAME.getValue() ;
-        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-
-                Question quest = new Question();
-                quest.setId(cursor.getInt(0));
-                quest.setContent(cursor.getString(1));
-                quest.setAnswer(cursor.getString(2));
-
-                quesList.add(quest);
-            } while (cursor.moveToNext());
-        }
-        // return quest list
-        return quesList;
-    }
-
-    public List<Answer> getTopThreeAnswer() {
-        List<Answer> answers = new ArrayList<>();
-        SQLiteDatabase sqLiteDatabase;
-        sqLiteDatabase=this.getReadableDatabase();
-        String selectQuery = "SELECT * FROM " + Constant.Answer.TABLE_NAME.getValue() + "  LIMIT 3; " ;
-        Cursor cursor = sqLiteDatabase.rawQuery(selectQuery, null);
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Answer ans = new Answer();
-                ans.setContent(cursor.getString(1));
-                answers.add(ans);
-            } while (cursor.moveToNext());
-        }
-        // return quest list
-        return answers;
     }
 }
