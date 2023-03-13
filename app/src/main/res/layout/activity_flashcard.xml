@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="5dp"
-    android:background="@color/white_smoke"
+    android:background="@color/primary"
     android:orientation="vertical"
     android:padding="5dp"
     tools:context=".activity.FlashcardActivity">
@@ -19,7 +19,7 @@
             android:id="@+id/img_exist"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:background="@color/white_smoke"
+            android:background="@color/lightGray"
             android:gravity="start"
             app:srcCompat="@drawable/ic_baseline_close_24"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
@@ -32,7 +32,7 @@
             android:gravity="center"
             android:text="1/13"
             android:textAlignment="center"
-            android:textColor="@color/black"
+            android:textColor="@color/white_smoke"
             android:textSize="18dp"
             android:textStyle="bold" />
     </LinearLayout>

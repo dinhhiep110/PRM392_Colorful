@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -26,6 +27,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private MainActivity mainActivity;
     private View fragView;
+    private TextView tvUserNameProfile;
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -42,6 +45,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         mainActivity = (MainActivity) getActivity();
         DataLocalManager.init(getContext());
         fragView = inflater.inflate(R.layout.fragment_profile, container, false);
+        tvUserNameProfile = fragView.findViewById(R.id.tv_username_profile);
+        tvUserNameProfile.setText("Hello , " + DataLocalManager.getAccount().getUsername());
         onClickView();
         return fragView;
     }

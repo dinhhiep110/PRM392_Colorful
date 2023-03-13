@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_smoke"
+    android:background="@color/primary"
     android:orientation="vertical"
     tools:context=".activity.ChangeEmailActivity">
 
@@ -16,7 +16,8 @@
         android:layout_marginLeft="10dp"
         android:text="Email:"
         android:textAlignment="viewStart"
-        android:textColor="#232323"
+        android:textColor="@color/white_smoke"
+        android:textColorHint="@color/white_smoke"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,17 +34,20 @@
         android:ems="10"
         android:hint="Enter new email"
         android:paddingVertical="10dp"
-        android:textColor="@color/primary"
+        android:textColor="@color/white_smoke"
+        android:textColorHint="@color/white_smoke"
         android:textCursorDrawable="@color/black"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
     <TextView
         android:id="@+id/tv_msg_change_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/red"
         android:layout_marginHorizontal="10dp"
+        android:textColor="@color/red"
 
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -23,10 +23,9 @@ import com.coloful.fragments.SearchFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+    TextView actionBarTitle;
     private ActionBar toolbar;
     private BottomNavigationView navigation;
-    TextView actionBarTitle;
-
 
     @SuppressLint({"ResourceAsColor", "MissingInflatedId"})
     @Override
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private void getDataFromOtherActivity(String backScreen) {
         if (backScreen == null) {
-            backScreen = new String();
+            backScreen = "";
         }
         System.out.println(backScreen);
         switch (backScreen) {

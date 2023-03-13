@@ -1,6 +1,11 @@
 package com.coloful.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import com.coloful.R;
 import com.coloful.dao.AnswerDao;
@@ -24,6 +30,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class LearningActivity extends AppCompatActivity {
+    private final String NOTIFICATION_CHANNEL_ID = "Learning Quiz";
+    private final String NOTIFICATION_CHANNEL_NAME = "Learning Quiz Notifications";
     private int quizCount = 1;
     private int qid = 0;
     private int QUIZ_COUNT = 5;
@@ -115,6 +123,10 @@ public class LearningActivity extends AppCompatActivity {
                 intent.putExtra("RIGHT_ANSWER_COUNT", rightAnswerCount);
                 intent.putExtra("TOTAL_SCORE", quesList.size());
                 startActivity(intent);
+                pushNotification("Hey, You Are Great For Learning Activity \n" +
+                        "Here is your result! \n" +
+                        "Total Question: " + quesList.size() + "\n" +
+                        "Total Right: " + rightAnswerCount);
             } else {
                 qid++;
                 quizCount++;
@@ -138,5 +150,35 @@ public class LearningActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void pushNotification(String data) {
+        Intent openActivity = new Intent(this, ResultActivity.class);
+        openActivity.putExtra("RIGHT_ANSWER_COUNT", rightAnswerCount);
+        openActivity.putExtra("TOTAL_SCORE", quesList.size());
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 10, openActivity,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification = builder
+                .setSmallIcon(android.R.drawable.btn_star_big_on)
+                .setContentTitle("Congrats! Your Learning Result Are Here")
+                .setContentText(data)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setPriority(Notification.DEFAULT_LIGHTS)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(data))
+                .build();
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    NOTIFICATION_CHANNEL_ID,
+                    NOTIFICATION_CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_HIGH);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        notificationManager.notify(3, notification);
     }
 }
