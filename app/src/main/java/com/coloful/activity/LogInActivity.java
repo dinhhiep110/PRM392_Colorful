@@ -1,30 +1,21 @@
 package com.coloful.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.coloful.R;
 import com.coloful.adapters.FragmentDialogHelper;
-import com.coloful.constant.Constant;
 import com.coloful.dao.AccountDao;
-import com.coloful.dao.DBHelper;
-import com.coloful.dao.QuizDao;
 import com.coloful.datalocal.DataLocalManager;
 import com.coloful.model.Account;
-import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,10 +31,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     private EditText edtPassword;
     private TextView tvMsg;
     private AccountDao accountDao;
-//    private SharedPreferences sharedPreferences;
-//    private SharedPreferences.Editor editor;
-//
-//    DataLocalManager dataLocalManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,18 +91,18 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             tvMsg.setText("Please enter username and password!");
+            return;
+        }
+        Account isLogin = accountDao.checkAccount(this, account);
+        if (Objects.isNull(isLogin)) {
+            tvMsg.setText("Username or password is invalid!");
         } else {
-            Account isLogin = accountDao.checkAccount(this, account);
-            if (Objects.isNull(isLogin)) {
-                tvMsg.setText("Username or password is invalid!");
-            } else {
-                DataLocalManager.setAccount(isLogin);
-                // init some quiz
+            DataLocalManager.setAccount(isLogin);
+            // init some quiz
 //                QuizDao.initQuizData(LogInActivity.this);
 
-                Intent main = new Intent(this, MainActivity.class);
-                startActivity(main);
-            }
+            Intent main = new Intent(this, MainActivity.class);
+            startActivity(main);
         }
     }
 }

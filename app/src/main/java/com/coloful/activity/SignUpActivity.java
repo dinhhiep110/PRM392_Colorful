@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.coloful.R;
@@ -19,7 +18,6 @@ import com.coloful.dao.DBHelper;
 import com.coloful.model.Account;
 
 import java.util.Calendar;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 
@@ -49,10 +47,9 @@ public class SignUpActivity extends AppCompatActivity {
         ed_date = (EditText) findViewById(R.id.ed_date);
 
         ed_date.addTextChangedListener(new TextWatcher() {
+            private final String ddmmyyyy = "DDMMYYYY";
+            private final Calendar cal = Calendar.getInstance();
             private String current = "";
-            private String ddmmyyyy = "DDMMYYYY";
-            private Calendar cal = Calendar.getInstance();
-
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -135,32 +132,29 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if (dob.equals("") || email.equals("") || username.equals("") || password.equals("")) {
                     Toast.makeText(SignUpActivity.this, "Please enter all the fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (accountDao.checkUsernameAndEmail(SignUpActivity.this, account)) {
+                    Toast.makeText(SignUpActivity.this, "Username or email was used", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (accountDao.checkUsernameAndEmail(SignUpActivity.this, account)) {
-                        Toast.makeText(SignUpActivity.this, "Username or email was used", Toast.LENGTH_SHORT).show();
+                    if (!patternAccAndPass.matcher(username).find()) {
+                        Toast.makeText(SignUpActivity.this, "Username not valid", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!patternAccAndPass.matcher(password).find()) {
+                        Toast.makeText(SignUpActivity.this, "Password not valid", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (!patternEmail.matcher(email).find()) {
+                        Toast.makeText(SignUpActivity.this, "Email not valid", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (accountDao.insertAccount(SignUpActivity.this, account)) {
+                        Toast.makeText(SignUpActivity.this, "Registered successfully", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SignUpActivity.this, LogInActivity.class);
+                        startActivity(intent);
                     } else {
-                        if(!patternAccAndPass.matcher(username).find()){
-                            Toast.makeText(SignUpActivity.this, "Username not valid", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if(!patternAccAndPass.matcher(password).find()){
-                            Toast.makeText(SignUpActivity.this, "Password not valid", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if(!patternEmail.matcher(email).find()){
-                            Toast.makeText(SignUpActivity.this, "Email not valid", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if (accountDao.insertAccount(SignUpActivity.this, account)) {
-                            Toast.makeText(SignUpActivity.this, "Registered successfully", Toast.LENGTH_SHORT).show();
-                            //init data => create some accounts
-//                            AccountDao.initDataAccount(SignUpActivity.this);
-
-                            Intent intent = new Intent(SignUpActivity.this, LogInActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(SignUpActivity.this, "Registered fail", Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(SignUpActivity.this, "Registered fail", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
