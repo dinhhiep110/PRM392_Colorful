@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.coloful.activity.EditStudySetActivity;
 import com.coloful.constant.Constant;
 import com.coloful.model.Answer;
 
@@ -31,6 +30,7 @@ public class AnswerDao {
                 answers.add(ans);
             } while (cursor.moveToNext());
         }
+        sqLiteDatabase.close();
         db.close();
         // return quest list
         return answers;
@@ -40,11 +40,11 @@ public class AnswerDao {
         db = new DBHelper(context);
         sqLiteDatabase = db.getReadableDatabase();
         String sql = "DELETE FROM " + Constant.Answer.TABLE_NAME.getValue() +
-                "WHERE question_id IN " +
-                "(SELECT qs.id FROM Question qs INNER JOIN Quiz qz" +
-                "ON qs.quiz_id = qz.id " +
-                "WHERE qs.quiz_id = ?)";
-        String[] selectionArgs = new String[] { Integer.toString(quizId) };
+                " WHERE question_id IN" +
+                " (SELECT qs.id FROM Question qs INNER JOIN Quiz qz" +
+                " ON qs.quiz_id = qz.id " +
+                " WHERE qs.quiz_id = ?)";
+        String[] selectionArgs = new String[]{Integer.toString(quizId)};
         sqLiteDatabase.execSQL(sql, selectionArgs);
         sqLiteDatabase.close();
     }

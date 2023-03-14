@@ -43,7 +43,6 @@ public class QuizDao {
             cursor.moveToNext();
         }
         cursor.close();
-        sqLiteDatabase.close();
         return quizList;
     }
 
@@ -62,7 +61,6 @@ public class QuizDao {
             q.setAuthor(account);
             return q;
         }
-        sqLiteDatabase.close();
         return null;
     }
 
@@ -78,7 +76,6 @@ public class QuizDao {
         } else {
             Toast.makeText(context, "Added success", Toast.LENGTH_SHORT).show();
         }
-        sqLiteDatabase.close();
         return result;
     }
 
@@ -93,7 +90,6 @@ public class QuizDao {
             Toast.makeText(context, "Added success", Toast.LENGTH_SHORT).show();
             addAnswer(context, answer, q_id);
         }
-        sqLiteDatabase.close();
     }
 
     public void addAnswer(Context context, String answer, Long ques_id) {
@@ -106,7 +102,6 @@ public class QuizDao {
         } else {
             Toast.makeText(context, "Added answer success", Toast.LENGTH_SHORT).show();
         }
-        sqLiteDatabase.close();
     }
 
     public void joinQuiz(Context context, Integer quizId, Integer accountID) {
@@ -124,7 +119,6 @@ public class QuizDao {
         values.put(Constant.QuizAccount.QUIZ_ID.getValue(), quizId);
         values.put(Constant.QuizAccount.ACCOUNT_ID.getValue(), accountID);
         sqLiteDatabase.insert(Constant.QuizAccount.TABLE_NAME.getValue(), null, values);
-        sqLiteDatabase.close();
     }
 
     private boolean checkJoinQuiz(Context context, int quizId, int accountId) {
@@ -164,7 +158,7 @@ public class QuizDao {
     public List<Quiz> getYourQuiz(Context context, Account account) {
         db = new DBHelper(context);
         sqLiteDatabase = db.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("select * from quiz where author =?"
+        Cursor cursor = sqLiteDatabase.rawQuery("select * from quiz where author =? order by id desc "
                 , new String[]{account.getId().toString()});
         cursor.moveToFirst();
         List<Quiz> quizList = new ArrayList<>();
@@ -212,7 +206,6 @@ public class QuizDao {
                     return false;
                 }
             }
-            sqLiteDatabase.close();
             return true;
         }
     }

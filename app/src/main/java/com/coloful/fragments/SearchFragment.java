@@ -7,12 +7,10 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -23,9 +21,10 @@ import com.coloful.dao.QuizDao;
 import com.coloful.datalocal.DataLocalManager;
 import com.coloful.model.Quiz;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -35,23 +34,23 @@ import java.util.stream.Collectors;
  */
 public class SearchFragment extends Fragment {
 
-    private EditText edtSearch;
-    private TextView tvNoti;
-
-    private ListView lvSearch;
-    private ListViewQuizAdapter adapter;
-
-    private List<Quiz> quizList = new ArrayList<>();
-    private List<Quiz> quizShow = new ArrayList<>();
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    private final List<Quiz> quizList = new ArrayList<>();
+    private EditText edtSearch;
+    private TextView tvNoti;
+    private ListView lvSearch;
+    private ListViewQuizAdapter adapter;
+    private List<Quiz> quizShow = new ArrayList<>();
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    public SearchFragment() {
+        // Required empty public constructor
+    }
 
     /**
      * Use this factory method to create a new instance of
@@ -69,10 +68,6 @@ public class SearchFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public SearchFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -133,6 +128,9 @@ public class SearchFragment extends Fragment {
     }
 
     private List<Quiz> getQuizSearch(String charSequence) {
+        if (StringUtils.isEmpty(charSequence)) {
+            return new ArrayList<>();
+        }
         return quizList.stream().filter(q ->
                 q.getTitle().toLowerCase().contains(charSequence.toLowerCase())
         ).collect(Collectors.toList());

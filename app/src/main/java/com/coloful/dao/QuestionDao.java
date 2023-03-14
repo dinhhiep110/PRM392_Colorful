@@ -1,6 +1,5 @@
 package com.coloful.dao;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -61,11 +60,11 @@ public class QuestionDao {
         return questionList;
     }
 
-    public Integer removeAllQuestionByQuizId(Context context,int quizId) {
+    public Integer removeAllQuestionByQuizId(Context context, int quizId) {
         db = new DBHelper(context);
         sqLiteDatabase = db.getWritableDatabase();
         String whereClause = " quiz_id = ?";
-        String[] whereArgs = new String[] { Integer.toString(quizId) };
+        String[] whereArgs = new String[]{Integer.toString(quizId)};
 
         // Delete the row from the database
         int result = sqLiteDatabase.delete(Constant.Question.TABLE_NAME.getValue(), whereClause, whereArgs);
@@ -74,7 +73,7 @@ public class QuestionDao {
         } else {
             Toast.makeText(context, "Added success", Toast.LENGTH_SHORT).show();
         }
-        db.close();
+        sqLiteDatabase.close();
         return result;
     }
 }

@@ -27,7 +27,8 @@
             android:textColor="@color/primary"
             android:textColorHint="@color/primary"
             android:textCursorDrawable="@color/black"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
@@ -45,7 +46,7 @@
             android:gravity="center"
             android:orientation="vertical">
 
-<!--            <include layout="@layout/list_view_create_set_item"></include>-->
+            <!--            <include layout="@layout/list_view_create_set_item"></include>-->
         </LinearLayout>
 
         <ImageButton

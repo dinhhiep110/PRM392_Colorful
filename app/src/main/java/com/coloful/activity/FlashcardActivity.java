@@ -1,7 +1,5 @@
 package com.coloful.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.content.Intent;
@@ -9,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.coloful.R;
 import com.coloful.dao.QuizDao;
@@ -81,7 +81,7 @@ public class FlashcardActivity extends AppCompatActivity implements View.OnClick
                 break;
             case R.id.img_flash_pre:
                 imgNext.setVisibility(View.VISIBLE);
-                currentQues = questionList.get(posPre -1);
+                currentQues = questionList.get(posPre - 1);
                 tvFlashcardNumber.setText(posPre + "/" + questionList.size());
                 tvFront.setText(currentQues.getContent());
                 tvBack.setText(currentQues.getAnswer());

@@ -16,10 +16,8 @@ import androidx.fragment.app.DialogFragment;
 import com.coloful.R;
 import com.coloful.activity.CreateStudySetActivity;
 import com.coloful.dao.AccountDao;
-import com.coloful.datalocal.DataLocalManager;
 import com.coloful.model.Account;
 
-import java.nio.charset.Charset;
 import java.util.Random;
 
 public class FragmentDialogHelper extends DialogFragment implements View.OnClickListener {
@@ -95,9 +93,9 @@ public class FragmentDialogHelper extends DialogFragment implements View.OnClick
         switch (view.getId()) {
             case R.id.btn_fg_pass_ok:
                 String username_p = editText.getText().toString();
-                if (username_p == null || username_p.isEmpty()){
+                if (username_p == null || username_p.isEmpty()) {
                     tvInstruc.setText("Please enter your username to find password!");
-                }else {
+                } else {
                     Account account = accountDao.checkUsernameExisted(getContext(), username_p);
                     if (account != null) {
                         int leftLimit = 48; // numeral '0'

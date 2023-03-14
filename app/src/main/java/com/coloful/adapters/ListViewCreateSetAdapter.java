@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.coloful.R;
 import com.coloful.model.Question;
@@ -14,8 +13,8 @@ import com.coloful.model.Question;
 import java.util.List;
 
 public class ListViewCreateSetAdapter extends BaseAdapter {
-    private List<Question> itemList;
-    private Activity activity;
+    private final List<Question> itemList;
+    private final Activity activity;
 
     public ListViewCreateSetAdapter(Activity activity, List<Question> itemList) {
         this.activity = activity;

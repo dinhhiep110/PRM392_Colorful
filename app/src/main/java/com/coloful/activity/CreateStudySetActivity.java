@@ -32,6 +32,8 @@ import com.coloful.model.Account;
 import org.apache.commons.lang3.StringUtils;
 
 public class CreateStudySetActivity extends AppCompatActivity {
+    private final String NOTIFICATION_CHANNEL_ID = "CreateSuccessStudySet";
+    private final String NOTIFICATION_CHANNEL_NAME = "Create Study Set Notifications";
     private Button btnSave;
     private EditText edtCreateQuizTitle;
     private Account account;
@@ -140,10 +142,7 @@ public class CreateStudySetActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private final String NOTIFICATION_CHANNEL_ID = "CreateSuccessStudySet";
-    private final String NOTIFICATION_CHANNEL_NAME = "Create Study Set Notifications";
-
-    private void pushNotification(String data,int quizId) {
+    private void pushNotification(String data, int quizId) {
         Intent openActivity = new Intent(this, StudySetDetailsActivity.class);
         openActivity.putExtra("screen", "home");
         openActivity.putExtra("quizId", quizId);

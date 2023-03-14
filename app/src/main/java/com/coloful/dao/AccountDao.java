@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.coloful.activity.ChangeEmailActivity;
-import com.coloful.activity.ChangePasswordActivity;
 import com.coloful.constant.Constant;
 import com.coloful.model.Account;
 
@@ -16,6 +14,26 @@ import java.util.List;
 public class AccountDao {
     DBHelper db;
     SQLiteDatabase sqLiteDatabase;
+
+    public static void initDataAccount(Context context) {
+        DBHelper db = new DBHelper(context);
+        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
+
+        List<Account> accountList = new ArrayList<>();
+        accountList.add(new Account(null, "user_user2", "123456", "abcd@gmail.com", "01/09/1996"));
+        accountList.add(new Account(null, "user_user3", "123456", "abcd1@gmail.com", "02/09/1996"));
+        accountList.add(new Account(null, "user_user4", "123456", "abc2d@gmail.com", "03/09/1996"));
+        accountList.add(new Account(null, "user_user5", "123456", "abcd3@gmail.com", "04/09/1996"));
+        accountList.forEach(account -> {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(Constant.Account.USERNAME.getValue(), account.getUsername());
+            contentValues.put(Constant.Account.PASSWORD.getValue(), account.getPassword());
+            contentValues.put(Constant.Account.EMAIL.getValue(), account.getEmail());
+            contentValues.put(Constant.Account.DOB.getValue(), account.getDob());
+            sqLiteDatabase.insert(Constant.Account.TABLE_NAME.getValue(), null, contentValues);
+        });
+        sqLiteDatabase.close();
+    }
 
     public Account checkAccount(Context context, Account account) {
         db = new DBHelper(context);
@@ -101,11 +119,7 @@ public class AccountDao {
         contentValues.put(Constant.Account.DOB.getValue(), account.getDob());
         long result = sqLiteDatabase.insert(Constant.Account.TABLE_NAME.getValue(), null, contentValues);
         sqLiteDatabase.close();
-        if (result <= 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return result > 0;
     }
 
     public boolean updateEmail(Context context, String newEmail, Integer id) {
@@ -158,26 +172,6 @@ public class AccountDao {
         cursor.close();
         sqLiteDatabase.close();
         return acc;
-    }
-
-    public static void initDataAccount(Context context) {
-        DBHelper db = new DBHelper(context);
-        SQLiteDatabase sqLiteDatabase = db.getWritableDatabase();
-
-        List<Account> accountList = new ArrayList<>();
-        accountList.add(new Account(null, "user_user2", "123456", "abcd@gmail.com", "01/09/1996"));
-        accountList.add(new Account(null, "user_user3", "123456", "abcd1@gmail.com", "02/09/1996"));
-        accountList.add(new Account(null, "user_user4", "123456", "abc2d@gmail.com", "03/09/1996"));
-        accountList.add(new Account(null, "user_user5", "123456", "abcd3@gmail.com", "04/09/1996"));
-        accountList.forEach(account -> {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(Constant.Account.USERNAME.getValue(), account.getUsername());
-            contentValues.put(Constant.Account.PASSWORD.getValue(), account.getPassword());
-            contentValues.put(Constant.Account.EMAIL.getValue(), account.getEmail());
-            contentValues.put(Constant.Account.DOB.getValue(), account.getDob());
-            sqLiteDatabase.insert(Constant.Account.TABLE_NAME.getValue(), null, contentValues);
-        });
-        sqLiteDatabase.close();
     }
 
     public String getUsernameByEmail(Context context, String email) {

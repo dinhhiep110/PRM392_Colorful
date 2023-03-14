@@ -1,9 +1,5 @@
 package com.coloful.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.core.app.NotificationCompat;
-
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -23,15 +19,25 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.app.NotificationCompat;
+
 import com.coloful.R;
 import com.coloful.dao.AnswerDao;
 import com.coloful.dao.QuestionDao;
 import com.coloful.dao.QuizDao;
 import com.coloful.datalocal.DataLocalManager;
 import com.coloful.model.Account;
+import com.coloful.model.Question;
 import com.coloful.model.Quiz;
 
+import java.util.List;
+import java.util.Objects;
+
 public class EditStudySetActivity extends AppCompatActivity {
+    private final String NOTIFICATION_CHANNEL_ID = "EditSuccessStudySet";
+    private final String NOTIFICATION_CHANNEL_NAME = "Edit Study Set Notifications";
     private Button btnSave;
     private EditText edtEditQuizTitle;
     private Account account;
@@ -39,7 +45,8 @@ public class EditStudySetActivity extends AppCompatActivity {
     private LinearLayout list;
     private ArrayAdapter<String> arrayAdapter;
     private Context context;
-
+    private QuestionDao questionDao;
+    private AnswerDao answerDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +56,8 @@ public class EditStudySetActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4257b0")));
         context = this;
         QuizDao quizDao = new QuizDao();
-        QuestionDao questionDao = new QuestionDao();
-        AnswerDao answerDao = new AnswerDao();
+        questionDao = new QuestionDao();
+        answerDao = new AnswerDao();
 
         edtEditQuizTitle = findViewById(R.id.edt_edit_quiz_title);
         list = findViewById(R.id.list);
@@ -60,11 +67,9 @@ public class EditStudySetActivity extends AppCompatActivity {
         account = DataLocalManager.getAccount();
         Intent intent = getIntent();
         int quizId = intent.getIntExtra("quizId", 0);
-        Quiz quiz = quizDao.getQuizById(this,quizId);
-        answerDao.removeAllAnswerByQuizId(this,quizId);
-        questionDao.removeAllQuestionByQuizId(this,quizId);
+        Quiz quiz = quizDao.getQuizById(this, quizId);
         edtEditQuizTitle.setText(quiz.getTitle());
-        addItem();
+        showItem(quizId);
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +79,9 @@ public class EditStudySetActivity extends AppCompatActivity {
                     Toast.makeText(context, "You need at least one question, please check again!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                questionDao.removeAllQuestionByQuizId(context, quizId);
+                answerDao.removeAllAnswerByQuizId(context, quizId);
 
                 for (int i = 0; i < list.getChildCount(); i++) {
                     if (list.getChildAt(i) instanceof LinearLayoutCompat) {
@@ -105,6 +113,11 @@ public class EditStudySetActivity extends AppCompatActivity {
         });
     }
 
+    private void showItem(int quizId) {
+        List<Question> questionForQuiz = questionDao.getQuestionForQuiz(this, quizId);
+        questionForQuiz.forEach(question -> processItem(question.getContent(), question.getAnswer()));
+    }
+
     public void addItem() {
         LayoutInflater layoutInflater =
                 (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -118,8 +131,36 @@ public class EditStudySetActivity extends AppCompatActivity {
 
         list.addView(addView);
         Button buttonRemove = (Button) addView.findViewById(R.id.remove);
+        final View.OnClickListener thisListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((LinearLayout) addView.getParent()).removeView(addView);
+            }
+        };
+        buttonRemove.setOnClickListener(thisListener);
+    }
+
+    public void processItem(String edtQuestion, String editAnswer) {
+        LayoutInflater layoutInflater =
+                (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View addView = layoutInflater.inflate(R.layout.list_view_create_set_item, null);
+        LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(
+                LinearLayoutCompat.LayoutParams.MATCH_PARENT,
+                LinearLayoutCompat.LayoutParams.WRAP_CONTENT
+        );
+        params.setMargins(0, 15, 0, 15);
+        addView.setLayoutParams(params);
+
+        list.addView(addView);
+        Button buttonRemove = (Button) addView.findViewById(R.id.remove);
+        EditText etQuestion = (EditText) addView.findViewById(R.id.edt_question);
+        EditText etAnswer = (EditText) addView.findViewById(R.id.edt_answer);
         final View.OnClickListener thisListener = v -> ((LinearLayout) addView.getParent()).removeView(addView);
         buttonRemove.setOnClickListener(thisListener);
+        if (Objects.nonNull(edtQuestion) && Objects.nonNull(editAnswer)) {
+            etQuestion.setText(edtQuestion);
+            etAnswer.setText(editAnswer);
+        }
     }
 
     @Override
@@ -137,10 +178,7 @@ public class EditStudySetActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private final String NOTIFICATION_CHANNEL_ID = "EditSuccessStudySet";
-    private final String NOTIFICATION_CHANNEL_NAME = "Edit Study Set Notifications";
-
-    private void pushNotification(String data,int quizId) {
+    private void pushNotification(String data, int quizId) {
         Intent openActivity = new Intent(this, StudySetDetailsActivity.class);
         openActivity.putExtra("screen", "home");
         openActivity.putExtra("quizId", quizId);
