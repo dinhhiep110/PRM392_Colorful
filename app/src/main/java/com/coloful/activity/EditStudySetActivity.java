@@ -1,6 +1,9 @@
 package com.coloful.activity;
 
-import android.annotation.SuppressLint;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.app.NotificationCompat;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -20,58 +23,55 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import androidx.core.app.NotificationCompat;
-
 import com.coloful.R;
+import com.coloful.dao.QuestionDao;
 import com.coloful.dao.QuizDao;
 import com.coloful.datalocal.DataLocalManager;
 import com.coloful.model.Account;
+import com.coloful.model.Quiz;
 
-import org.apache.commons.lang3.StringUtils;
-
-public class CreateStudySetActivity extends AppCompatActivity {
+public class EditStudySetActivity extends AppCompatActivity {
     private Button btnSave;
-    private EditText edtCreateQuizTitle;
+    private EditText edtEditQuizTitle;
     private Account account;
     private ImageButton buttonAdd;
     private LinearLayout list;
     private ArrayAdapter<String> arrayAdapter;
     private Context context;
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_study_set);
+        setContentView(R.layout.activity_edit_study_set);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#4257b0")));
         context = this;
+        QuizDao quizDao = new QuizDao();
+        QuestionDao questionDao = new QuestionDao();
 
-        edtCreateQuizTitle = findViewById(R.id.edt_create_quiz_title);
+        edtEditQuizTitle = findViewById(R.id.edt_edit_quiz_title);
         list = findViewById(R.id.list);
-        btnSave = findViewById(R.id.btn_save_set);
+        btnSave = findViewById(R.id.btn_edit_set);
 
         buttonAdd = (ImageButton) findViewById(R.id.add);
         account = DataLocalManager.getAccount();
-
+        Intent intent = getIntent();
+        int quizId = intent.getIntExtra("quizId", 0);
+        Quiz quiz = quizDao.getQuizById(this,quizId);
+        questionDao.removeAllQuestionByQuizId(this,quizId);
+        edtEditQuizTitle.setText(quiz.getTitle());
         addItem();
+
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (StringUtils.isEmpty(edtCreateQuizTitle.getText().toString().trim())) {
-                    Toast.makeText(context, "Set's title can not null, please check again!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 if (list.getChildCount() < 1) {
-                    Toast.makeText(context, "To create a set requires at least one question, please check again!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "You need at least one question, please check again!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                QuizDao db = new QuizDao();
-                Long qId = db.addQuiz(CreateStudySetActivity.this, account.getId().toString(), edtCreateQuizTitle.getText().toString().trim());
                 for (int i = 0; i < list.getChildCount(); i++) {
                     if (list.getChildAt(i) instanceof LinearLayoutCompat) {
                         LinearLayoutCompat ll = (LinearLayoutCompat) list.getChildAt(i);
@@ -80,14 +80,13 @@ public class CreateStudySetActivity extends AppCompatActivity {
                             if (ll.getChildAt(j) instanceof EditText) {
                                 EditText et = (EditText) ll.getChildAt(j);
                                 if (et.getId() == R.id.edt_question) {
-                                    Toast.makeText(context, "" + et.getText().toString(), Toast.LENGTH_SHORT).show();
-                                    db.addQuestion(CreateStudySetActivity.this, et.getText().toString().trim(), qId, edtAnswer.getText().toString().trim());
+                                    quizDao.addQuestion(EditStudySetActivity.this, et.getText().toString().trim(), (long) quizId, edtAnswer.getText().toString().trim());
                                 }
                             }
                         }
                     }
                 }
-                pushNotification(edtCreateQuizTitle.getText().toString(), Math.toIntExact(qId));
+                pushNotification(edtEditQuizTitle.getText().toString(), quizId);
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
                 startActivity(intent);
             }
@@ -116,12 +115,7 @@ public class CreateStudySetActivity extends AppCompatActivity {
 
         list.addView(addView);
         Button buttonRemove = (Button) addView.findViewById(R.id.remove);
-        final View.OnClickListener thisListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((LinearLayout) addView.getParent()).removeView(addView);
-            }
-        };
+        final View.OnClickListener thisListener = v -> ((LinearLayout) addView.getParent()).removeView(addView);
         buttonRemove.setOnClickListener(thisListener);
     }
 
@@ -140,8 +134,8 @@ public class CreateStudySetActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private final String NOTIFICATION_CHANNEL_ID = "CreateSuccessStudySet";
-    private final String NOTIFICATION_CHANNEL_NAME = "Create Study Set Notifications";
+    private final String NOTIFICATION_CHANNEL_ID = "EditSuccessStudySet";
+    private final String NOTIFICATION_CHANNEL_NAME = "Edit Study Set Notifications";
 
     private void pushNotification(String data,int quizId) {
         Intent openActivity = new Intent(this, StudySetDetailsActivity.class);
@@ -154,7 +148,7 @@ public class CreateStudySetActivity extends AppCompatActivity {
                 new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = builder
                 .setSmallIcon(R.drawable.ic_baseline_add_circle_24)
-                .setContentTitle("Congrats! Your quiz " + edtCreateQuizTitle.getText() + " is created successfully")
+                .setContentTitle("Your quiz " + edtEditQuizTitle.getText() + " is edited successfully")
                 .setContentText(data)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
@@ -171,6 +165,6 @@ public class CreateStudySetActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
 
-        notificationManager.notify(2, notification);
+        notificationManager.notify(4, notification);
     }
 }

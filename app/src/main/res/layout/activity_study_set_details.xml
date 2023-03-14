@@ -61,7 +61,7 @@
             android:layout_marginTop="44dp"
             android:background="@drawable/border_bottom_blue_white"
             android:contentDescription="Learn"
-            app:layout_constraintBottom_toTopOf="@+id/lv_study_set_details"
+            app:layout_constraintBottom_toTopOf="@+id/rc_study_set_details"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_author"
             app:layout_constraintVertical_bias="0.0"
@@ -75,7 +75,7 @@
             android:layout_marginEnd="30dp"
             android:background="@drawable/border_bottom_blue_white"
             android:contentDescription="Flashcards"
-            app:layout_constraintBottom_toTopOf="@+id/lv_study_set_details"
+            app:layout_constraintBottom_toTopOf="@+id/rc_study_set_details"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_author"
             app:layout_constraintVertical_bias="0.0"
@@ -112,6 +112,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rc_study_set_details"
             app:layout_constraintVertical_bias="0.0" />
+
+        <ImageButton
+            android:id="@+id/img_edit"
+            android:layout_width="58dp"
+            android:layout_height="84dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_edit" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

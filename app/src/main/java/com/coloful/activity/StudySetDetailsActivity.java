@@ -31,7 +31,7 @@ public class StudySetDetailsActivity extends AppCompatActivity implements View.O
     private RecyclerView recyclerView;
     private Button btnStudySet;
     private ImageButton imnLearn;
-    private ImageButton imgFlashcard;
+    private ImageButton imgFlashcard,imgEditSet;
     private TextView tvTitle, tvAuthor, tvTerm;
     private String screen;
     private int quizId;
@@ -79,8 +79,10 @@ public class StudySetDetailsActivity extends AppCompatActivity implements View.O
         }
         btnStudySet = findViewById(R.id.btn_study_set);
         imgFlashcard = findViewById(R.id.img_flashcard);
+        imgEditSet = findViewById(R.id.img_edit);
         imnLearn = findViewById(R.id.img_learn);
 
+        imgEditSet.setOnClickListener(this::onClick);
         btnStudySet.setOnClickListener(this::onClick);
         imgFlashcard.setOnClickListener(this::onClick);
         imnLearn.setOnClickListener(this::onClick);
@@ -130,6 +132,11 @@ public class StudySetDetailsActivity extends AppCompatActivity implements View.O
                 break;
             case R.id.img_learn:
                 intent = new Intent(this, LearningActivity.class);
+                intent.putExtra("quizId", quizId);
+                startActivity(intent);
+                break;
+            case R.id.img_edit:
+                intent = new Intent(this, EditStudySetActivity.class);
                 intent.putExtra("quizId", quizId);
                 startActivity(intent);
                 break;

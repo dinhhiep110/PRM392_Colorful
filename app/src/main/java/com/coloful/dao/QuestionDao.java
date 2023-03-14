@@ -1,8 +1,10 @@
 package com.coloful.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import com.coloful.constant.Constant;
 import com.coloful.model.Question;
@@ -55,5 +57,22 @@ public class QuestionDao {
         }
         // return quest list
         return questionList;
+    }
+
+    public Integer removeAllQuestionByQuizId(Context context,int quizId) {
+        db = new DBHelper(context);
+        sqLiteDatabase = db.getWritableDatabase();
+        String whereClause = "quiz_id = ?";
+        String[] whereArgs = new String[] { Integer.toString(quizId) };
+
+        // Delete the row from the database
+        int result = sqLiteDatabase.delete(Constant.Question.TABLE_NAME.getValue(), whereClause, whereArgs);
+        if (result == -1) {
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Added success", Toast.LENGTH_SHORT).show();
+            return result;
+        }
+        return null;
     }
 }
