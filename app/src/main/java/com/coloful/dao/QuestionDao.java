@@ -34,6 +34,7 @@ public class QuestionDao {
             questionList.add(q);
             cursor.moveToNext();
         }
+        db.close();
         return questionList;
     }
 
@@ -55,6 +56,7 @@ public class QuestionDao {
                 questionList.add(quest);
             } while (cursor.moveToNext());
         }
+        db.close();
         // return quest list
         return questionList;
     }
@@ -62,7 +64,7 @@ public class QuestionDao {
     public Integer removeAllQuestionByQuizId(Context context,int quizId) {
         db = new DBHelper(context);
         sqLiteDatabase = db.getWritableDatabase();
-        String whereClause = "quiz_id = ?";
+        String whereClause = " quiz_id = ?";
         String[] whereArgs = new String[] { Integer.toString(quizId) };
 
         // Delete the row from the database
@@ -71,8 +73,8 @@ public class QuestionDao {
             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "Added success", Toast.LENGTH_SHORT).show();
-            return result;
         }
-        return null;
+        db.close();
+        return result;
     }
 }

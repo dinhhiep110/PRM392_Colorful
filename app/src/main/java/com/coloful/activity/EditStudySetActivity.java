@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.coloful.R;
+import com.coloful.dao.AnswerDao;
 import com.coloful.dao.QuestionDao;
 import com.coloful.dao.QuizDao;
 import com.coloful.datalocal.DataLocalManager;
@@ -49,6 +50,7 @@ public class EditStudySetActivity extends AppCompatActivity {
         context = this;
         QuizDao quizDao = new QuizDao();
         QuestionDao questionDao = new QuestionDao();
+        AnswerDao answerDao = new AnswerDao();
 
         edtEditQuizTitle = findViewById(R.id.edt_edit_quiz_title);
         list = findViewById(R.id.list);
@@ -59,6 +61,7 @@ public class EditStudySetActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int quizId = intent.getIntExtra("quizId", 0);
         Quiz quiz = quizDao.getQuizById(this,quizId);
+        answerDao.removeAllAnswerByQuizId(this,quizId);
         questionDao.removeAllQuestionByQuizId(this,quizId);
         edtEditQuizTitle.setText(quiz.getTitle());
         addItem();

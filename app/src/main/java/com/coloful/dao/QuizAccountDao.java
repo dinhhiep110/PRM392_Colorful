@@ -33,6 +33,7 @@ public class QuizAccountDao {
         } else {
             Toast.makeText(context, "Added success", Toast.LENGTH_SHORT).show();
         }
+        sqLiteDatabase.close();
     }
 
     public void updateQuizAccount(Context context, int accountId, int quizId) {
@@ -48,6 +49,7 @@ public class QuizAccountDao {
         } else {
             Toast.makeText(context, "Added success", Toast.LENGTH_SHORT).show();
         }
+        sqLiteDatabase.close();
     }
 
     public boolean getQuizAccountByIds(Context context, int accountId, int quizId) {
@@ -64,6 +66,7 @@ public class QuizAccountDao {
             cursor.moveToNext();
         }
         cursor.close();
+        sqLiteDatabase.close();
         return ObjectUtils.isNotEmpty(quizAccountDaos);
     }
 }

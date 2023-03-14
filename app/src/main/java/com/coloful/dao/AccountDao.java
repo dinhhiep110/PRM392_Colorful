@@ -177,6 +177,7 @@ public class AccountDao {
             contentValues.put(Constant.Account.DOB.getValue(), account.getDob());
             sqLiteDatabase.insert(Constant.Account.TABLE_NAME.getValue(), null, contentValues);
         });
+        sqLiteDatabase.close();
     }
 
     public String getUsernameByEmail(Context context, String email) {
@@ -187,7 +188,7 @@ public class AccountDao {
         if (cursor.getCount() > 0) {
             return cursor.getString(0);
         }
-
+        sqLiteDatabase.close();
         return null;
     }
 }
