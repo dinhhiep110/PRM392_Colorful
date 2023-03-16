@@ -11,6 +11,8 @@ import com.coloful.model.Account;
 import com.coloful.model.Question;
 import com.coloful.model.Quiz;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -62,6 +64,19 @@ public class QuizDao {
             return q;
         }
         return null;
+    }
+
+    public boolean isQuizExistByTitle(Context context, String title) {
+        db = new DBHelper(context);
+        sqLiteDatabase = db.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM quiz WHERE title = ?;", new String[]{title});
+        cursor.moveToFirst();
+        Quiz q = new Quiz();
+        if (cursor.getCount() > 0) {
+            q.setId(cursor.getInt(0));
+            q.setTitle(cursor.getString(1));
+        }
+        return !StringUtils.isEmpty(q.getTitle());
     }
 
     public Long addQuiz(Context context, String author, String title) {

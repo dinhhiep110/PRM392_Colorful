@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +33,11 @@ import com.coloful.model.Account;
 import com.coloful.model.Question;
 import com.coloful.model.Quiz;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class EditStudySetActivity extends AppCompatActivity {
@@ -63,7 +68,7 @@ public class EditStudySetActivity extends AppCompatActivity {
         list = findViewById(R.id.list);
         btnSave = findViewById(R.id.btn_edit_set);
 
-        buttonAdd = (ImageButton) findViewById(R.id.add);
+        buttonAdd = findViewById(R.id.add);
         account = DataLocalManager.getAccount();
         Intent intent = getIntent();
         int quizId = intent.getIntExtra("quizId", 0);
@@ -80,8 +85,7 @@ public class EditStudySetActivity extends AppCompatActivity {
                     return;
                 }
 
-                questionDao.removeAllQuestionByQuizId(context, quizId);
-                answerDao.removeAllAnswerByQuizId(context, quizId);
+                Map<String, String> map = new HashMap<>();
 
                 for (int i = 0; i < list.getChildCount(); i++) {
                     if (list.getChildAt(i) instanceof LinearLayoutCompat) {
@@ -91,11 +95,21 @@ public class EditStudySetActivity extends AppCompatActivity {
                             if (ll.getChildAt(j) instanceof EditText) {
                                 EditText et = (EditText) ll.getChildAt(j);
                                 if (et.getId() == R.id.edt_question) {
-                                    quizDao.addQuestion(EditStudySetActivity.this, et.getText().toString().trim(), (long) quizId, edtAnswer.getText().toString().trim());
+                                    if (isEmptyQuestionAndAnswer(et.getText().toString(), edtAnswer.getText().toString())) {
+                                        TextView tvError = ll.findViewById(R.id.tvErrorMsg);
+                                        tvError.setText("Term and definition cannot be empty!!");
+                                        return;
+                                    }
+                                    map.put(et.getText().toString().trim(), edtAnswer.getText().toString().trim());
                                 }
                             }
                         }
                     }
+                }
+                questionDao.removeAllQuestionByQuizId(context, quizId);
+                answerDao.removeAllAnswerByQuizId(context, quizId);
+                for (String ques : map.keySet()) {
+                    quizDao.addQuestion(EditStudySetActivity.this, ques, Long.valueOf(quizId), map.get(ques));
                 }
                 pushNotification(edtEditQuizTitle.getText().toString(), quizId);
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
@@ -111,6 +125,10 @@ public class EditStudySetActivity extends AppCompatActivity {
                 addItem();
             }
         });
+    }
+
+    private boolean isEmptyQuestionAndAnswer(String question, String answer) {
+        return StringUtils.isEmpty(question) || StringUtils.isEmpty(answer);
     }
 
     private void showItem(int quizId) {
@@ -130,7 +148,7 @@ public class EditStudySetActivity extends AppCompatActivity {
         addView.setLayoutParams(params);
 
         list.addView(addView);
-        Button buttonRemove = (Button) addView.findViewById(R.id.remove);
+        Button buttonRemove = addView.findViewById(R.id.remove);
         final View.OnClickListener thisListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,9 +170,9 @@ public class EditStudySetActivity extends AppCompatActivity {
         addView.setLayoutParams(params);
 
         list.addView(addView);
-        Button buttonRemove = (Button) addView.findViewById(R.id.remove);
-        EditText etQuestion = (EditText) addView.findViewById(R.id.edt_question);
-        EditText etAnswer = (EditText) addView.findViewById(R.id.edt_answer);
+        Button buttonRemove = addView.findViewById(R.id.remove);
+        EditText etQuestion = addView.findViewById(R.id.edt_question);
+        EditText etAnswer = addView.findViewById(R.id.edt_answer);
         final View.OnClickListener thisListener = v -> ((LinearLayout) addView.getParent()).removeView(addView);
         buttonRemove.setOnClickListener(thisListener);
         if (Objects.nonNull(edtQuestion) && Objects.nonNull(editAnswer)) {

@@ -16,7 +16,7 @@
         android:minHeight="100dp"
         android:text="SUDHSHJDSJDHJSD"
         android:textColor="@color/primary"
-        android:textSize="20sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"

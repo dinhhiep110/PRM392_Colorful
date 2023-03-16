@@ -3,7 +3,6 @@ package com.coloful.dao;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
 import com.coloful.constant.Constant;
 import com.coloful.model.Question;
@@ -68,11 +67,6 @@ public class QuestionDao {
 
         // Delete the row from the database
         int result = sqLiteDatabase.delete(Constant.Question.TABLE_NAME.getValue(), whereClause, whereArgs);
-        if (result == -1) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Added success", Toast.LENGTH_SHORT).show();
-        }
         sqLiteDatabase.close();
         return result;
     }

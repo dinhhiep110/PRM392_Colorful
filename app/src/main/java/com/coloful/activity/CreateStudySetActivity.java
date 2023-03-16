@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,9 @@ import com.coloful.datalocal.DataLocalManager;
 import com.coloful.model.Account;
 
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateStudySetActivity extends AppCompatActivity {
     private final String NOTIFICATION_CHANNEL_ID = "CreateSuccessStudySet";
@@ -55,14 +59,15 @@ public class CreateStudySetActivity extends AppCompatActivity {
         list = findViewById(R.id.list);
         btnSave = findViewById(R.id.btn_save_set);
 
-        buttonAdd = (ImageButton) findViewById(R.id.add);
+        buttonAdd = findViewById(R.id.add);
         account = DataLocalManager.getAccount();
 
         addItem();
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (StringUtils.isEmpty(edtCreateQuizTitle.getText().toString().trim())) {
+                String title = edtCreateQuizTitle.getText().toString().trim().toUpperCase();
+                if (StringUtils.isEmpty(title)) {
                     Toast.makeText(context, "Set's title can not null, please check again!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -73,7 +78,13 @@ public class CreateStudySetActivity extends AppCompatActivity {
                 }
 
                 QuizDao db = new QuizDao();
-                Long qId = db.addQuiz(CreateStudySetActivity.this, account.getId().toString(), edtCreateQuizTitle.getText().toString().trim());
+                if (db.isQuizExistByTitle(context, title)) {
+                    Toast.makeText(context, "Title is existed", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Map<String, String> map = new HashMap<>();
+
                 for (int i = 0; i < list.getChildCount(); i++) {
                     if (list.getChildAt(i) instanceof LinearLayoutCompat) {
                         LinearLayoutCompat ll = (LinearLayoutCompat) list.getChildAt(i);
@@ -82,12 +93,20 @@ public class CreateStudySetActivity extends AppCompatActivity {
                             if (ll.getChildAt(j) instanceof EditText) {
                                 EditText et = (EditText) ll.getChildAt(j);
                                 if (et.getId() == R.id.edt_question) {
-                                    Toast.makeText(context, "" + et.getText().toString(), Toast.LENGTH_SHORT).show();
-                                    db.addQuestion(CreateStudySetActivity.this, et.getText().toString().trim(), qId, edtAnswer.getText().toString().trim());
+                                    if (isEmptyQuestionAndAnswer(et.getText().toString(), edtAnswer.getText().toString())) {
+                                        TextView tvError = ll.findViewById(R.id.tvErrorMsg);
+                                        tvError.setText("Term and definition cannot be empty!!");
+                                        return;
+                                    }
+                                    map.put(et.getText().toString().trim(), edtAnswer.getText().toString().trim());
                                 }
                             }
                         }
                     }
+                }
+                Long qId = db.addQuiz(CreateStudySetActivity.this, account.getId().toString(), title);
+                for (String ques : map.keySet()) {
+                    db.addQuestion(CreateStudySetActivity.this, ques, qId, map.get(ques));
                 }
                 pushNotification(edtCreateQuizTitle.getText().toString(), Math.toIntExact(qId));
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
@@ -105,6 +124,10 @@ public class CreateStudySetActivity extends AppCompatActivity {
         });
     }
 
+    private boolean isEmptyQuestionAndAnswer(String question, String answer) {
+        return StringUtils.isEmpty(question) || StringUtils.isEmpty(answer);
+    }
+
     public void addItem() {
         LayoutInflater layoutInflater =
                 (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -117,7 +140,7 @@ public class CreateStudySetActivity extends AppCompatActivity {
         addView.setLayoutParams(params);
 
         list.addView(addView);
-        Button buttonRemove = (Button) addView.findViewById(R.id.remove);
+        Button buttonRemove = addView.findViewById(R.id.remove);
         final View.OnClickListener thisListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {

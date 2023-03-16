@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.widget.Toast;
 
 import com.coloful.constant.Constant;
 import com.coloful.model.QuizAccount;
@@ -27,12 +26,7 @@ public class QuizAccountDao {
         cv.put(Constant.QuizAccount.ACCOUNT_ID.getValue(), accountId);
         cv.put(Constant.QuizAccount.QUIZ_ID.getValue(), quizId);
         cv.put(Constant.QuizAccount.LAST_TIME_JOIN.getValue(), LocalDateTime.now().toString());
-        long result = sqLiteDatabase.insert(Constant.QuizAccount.TABLE_NAME.getValue(), null, cv);
-        if (result == -1) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Added success", Toast.LENGTH_SHORT).show();
-        }
+        sqLiteDatabase.insert(Constant.QuizAccount.TABLE_NAME.getValue(), null, cv);
         sqLiteDatabase.close();
     }
 
@@ -43,12 +37,7 @@ public class QuizAccountDao {
         cv.put(Constant.QuizAccount.ACCOUNT_ID.getValue(), accountId);
         cv.put(Constant.QuizAccount.QUIZ_ID.getValue(), quizId);
         cv.put(Constant.QuizAccount.LAST_TIME_JOIN.getValue(), LocalDateTime.now().toString());
-        long result = sqLiteDatabase.update(Constant.QuizAccount.TABLE_NAME.getValue(), cv,"quiz_id=? and account_id=?",new String[]{Integer.toString(quizId),Integer.toString(accountId)});
-        if (result == -1) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(context, "Added success", Toast.LENGTH_SHORT).show();
-        }
+        sqLiteDatabase.update(Constant.QuizAccount.TABLE_NAME.getValue(), cv, "quiz_id=? and account_id=?", new String[]{Integer.toString(quizId), Integer.toString(accountId)});
         sqLiteDatabase.close();
     }
 
@@ -56,7 +45,7 @@ public class QuizAccountDao {
         List<QuizAccount> quizAccountDaos = new ArrayList<>();
         db = new DBHelper(context);
         sqLiteDatabase = db.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("select * from quiz_account where quiz_id =? and account_id=?", new String[]{Integer.toString(quizId),Integer.toString(accountId)});
+        Cursor cursor = sqLiteDatabase.rawQuery("select * from quiz_account where quiz_id =? and account_id=?", new String[]{Integer.toString(quizId), Integer.toString(accountId)});
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             QuizAccount quizAccount = new QuizAccount();
